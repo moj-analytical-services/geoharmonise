@@ -7,6 +7,7 @@
 #' @param names A vector of names to be checked
 #' @param area_type Type of area (eg. "Local Authority", "Region")
 #' @param ONS_filedate A date corresponding to the ONS code list you wish to compare to. Run the ONS_geolist() function to obtain a list of valid dates.
+#' This should be in the format eg. "31-Dec-19".
 #' @return A list containing three elements: \cr \cr
 #' \strong{matches:} A data frame of area names which match with the ONS list (includes Exact and Partial matches) \cr
 #' \strong{unmatched_names:} A vector of names taken from the "names" input parameter which could not be matched to an ONS name \cr

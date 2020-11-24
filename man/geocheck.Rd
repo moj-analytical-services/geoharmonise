@@ -11,7 +11,8 @@ geocheck(names, area_type, ONS_filedate)
 
 \item{area_type}{Type of area (eg. "Local Authority", "Region")}
 
-\item{ONS_filedate}{A date corresponding to the ONS code list you wish to compare to. Run the ONS_geolist() function to obtain a list of valid dates.}
+\item{ONS_filedate}{A date corresponding to the ONS code list you wish to compare to. Run the ONS_geolist() function to obtain a list of valid dates.
+This should be in the format eg. "31-Dec-19".}
 }
 \value{
 A list containing three elements: \cr \cr

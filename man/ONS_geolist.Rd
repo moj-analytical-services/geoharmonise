@@ -10,7 +10,7 @@ ONS_geolist(area_type, date = NULL)
 \item{area_type}{Type of area (eg. "Local Authority", "Region")}
 
 \item{date}{The most recent date you would like a list for. This will return only those files which pre-date the date parameter.
-If left blank, the function will return all valid file dates.}
+If left blank, the function will return all valid file dates. This should be in the format eg."31-Dec-19"}
 }
 \value{
 A vector of dates

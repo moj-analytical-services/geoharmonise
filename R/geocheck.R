@@ -66,7 +66,7 @@ geocheck <- function(names, area_type, ONS_filedate) {
   file.create("dictionary.dic")
   file.create("dictionary.aff")
 
-  ONS_names <- ONS_data[, 2]
+  ONS_names <- as.character(ONS_data[, 2])
 
   if (area_type == "Region") {
     ONS_names <- c(ONS_names, "Wales")

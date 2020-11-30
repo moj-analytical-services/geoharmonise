@@ -21,7 +21,7 @@ geocheck <- function(names, area_type, ONS_filedate) {
 
   # Get data from ONS Geo portal and check for errors
 
-  ONS_data <- httr::GET(url = geo_url(ONS_filedate, area_type)) # to get the initial object using the  API
+  ONS_data <- httr::GET(url = geoharmonise:::geo_url(ONS_filedate, area_type)) # to get the initial object using the  API
 
   if (ONS_data$status_code == 200) {
     print("ONS area list downloaded OK...")
@@ -40,22 +40,21 @@ geocheck <- function(names, area_type, ONS_filedate) {
         ONS_df <-  ONS_data[[i]][["attributes"]] %>%
           as.data.frame() %>%
           dplyr::bind_rows(ONS_df)
-        
-      ONS_data <- ONS_df
+
     } 
   }else{
   
   # Remove unwanted fields and retain only England and Wales data
 
-  ONS_data <- httr::content(ONS_data, as = "parsed") %>%
+  ONS_df <- httr::content(ONS_data, as = "parsed") %>%
     jsonlite::fromJSON() %>%
     .$features %>%
     .$attributes
   }
 
-  EW <- stringr::str_which(ONS_data[, 1], "E|W")
+  EW <- stringr::str_which(ONS_df[, 1], "E|W")
 
-  ONS_data <- ONS_data[EW, 1:2]
+  ONS_data <- ONS_df[EW, 1:2]
 
   names <- stringr::str_trim(names, side = "both")
 

@@ -29,12 +29,29 @@ geocheck <- function(names, area_type, ONS_filedate) {
     stop("ONS area list not found. May be invalid date or area type.")
   }
 
+  # Conditional formatting as some data is not in standard JSOn structure
+  if(ONS_filedate %in% c("31-Dec-15", "31-Dec-14") & area_type %in% c("Country", "Region")){
+    ONS_data <- httr::content(ONS_data, as = "parsed") %>%
+      .$features
+    
+    ONS_df <- data.frame()
+    
+      for(i in 1:length(ONS_data)){
+        ONS_df <-  ONS_data[[i]][["attributes"]] %>%
+          as.data.frame() %>%
+          dplyr::bind_rows(ONS_df)
+        
+      ONS_data <- ONS_df
+    } 
+  }else{
+  
   # Remove unwanted fields and retain only England and Wales data
 
   ONS_data <- httr::content(ONS_data, as = "parsed") %>%
     jsonlite::fromJSON() %>%
     .$features %>%
     .$attributes
+  }
 
   EW <- stringr::str_which(ONS_data[, 1], "E|W")
 

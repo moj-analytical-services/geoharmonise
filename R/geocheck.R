@@ -34,14 +34,8 @@ geocheck <- function(names, area_type, ONS_filedate) {
     ONS_data <- httr::content(ONS_data, as = "parsed") %>%
       .$features
     
-    ONS_df <- data.frame()
+    ONS_df <- as.data.frame(purrr::map_dfr(ONS_data, purrr::pluck, "attributes"))
     
-      for(i in 1:length(ONS_data)){
-        ONS_df <-  ONS_data[[i]][["attributes"]] %>%
-          as.data.frame() %>%
-          dplyr::bind_rows(ONS_df)
-
-    } 
   }else{
   
   # Remove unwanted fields and retain only England and Wales data

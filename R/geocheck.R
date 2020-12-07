@@ -17,6 +17,15 @@
 
 geocheck <- function(names, area_type, ONS_filedate) {
 
+  if(is.na(as.Date(ONS_filedate, "%d-%b-%y"))) {
+    stop("Date is not in the expected format DD-MMM-YY")
+    } 
+  
+  #Return an error if date is not in expected list
+  if(ONS_filedate %in% ONS_geolist(area_type)$date == FALSE) {
+    stop(paste(ONS_filedate, "is not a recognised date for area type:", area_type))
+    } 
+
   namespec <- deparse(substitute(names))
 
   # Get data from ONS Geo portal and check for errors

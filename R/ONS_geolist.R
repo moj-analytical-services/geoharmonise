@@ -18,7 +18,7 @@ ONS_geolist <- function(area_type, date = NULL) {
   
   if(is.null(date)){} 
   else{
-  if(is.na(as.Date(date, "%d-%b-%y"))) {
+  if(is.na(as.Date(date, "%d-%b-%y"))| nchar(date) > 9) {
     stop("Date is not in the expected format DD-MMM-YY")
   }}
 

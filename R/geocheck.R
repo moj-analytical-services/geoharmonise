@@ -17,7 +17,7 @@
 
 geocheck <- function(names, area_type, ONS_filedate) {
 
-  if(is.na(as.Date(ONS_filedate, "%d-%b-%y")) | nchar(date) > 9) {
+  if(is.na(as.Date(ONS_filedate, "%d-%b-%y")) | nchar(ONS_filedate) > 9) {
     stop("Date is not in the expected format DD-MMM-YY")
     } 
   

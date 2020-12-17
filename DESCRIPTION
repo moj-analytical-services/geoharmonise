@@ -13,3 +13,5 @@ Imports:
 	stringr,
 	magrittr
 RoxygenNote: 6.1.1
+Suggests: 
+    testthat

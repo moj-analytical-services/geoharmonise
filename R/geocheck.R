@@ -17,11 +17,20 @@
 
 geocheck <- function(names, area_type, ONS_filedate) {
 
+  if(is.na(as.Date(ONS_filedate, "%d-%b-%y")) | nchar(ONS_filedate) > 9) {
+    stop("Date is not in the expected format DD-MMM-YY")
+    } 
+  
+  #Return an error if date is not in expected list
+  if(ONS_filedate %in% ONS_geolist(area_type)$date == FALSE) {
+    stop(paste(ONS_filedate, "is not a recognised date for area type:", area_type))
+    } 
+
   namespec <- deparse(substitute(names))
 
   # Get data from ONS Geo portal and check for errors
 
-  ONS_data <- httr::GET(url = geo_url(ONS_filedate, area_type)) # to get the initial object using the  API
+  ONS_data <- httr::GET(url = geoharmonise:::geo_url(ONS_filedate, area_type)) # to get the initial object using the  API
 
   if (ONS_data$status_code == 200) {
     print("ONS area list downloaded OK...")
@@ -29,16 +38,26 @@ geocheck <- function(names, area_type, ONS_filedate) {
     stop("ONS area list not found. May be invalid date or area type.")
   }
 
+  # Conditional formatting as some data is not in standard JSOn structure
+  if(ONS_filedate %in% c("31-Dec-15", "31-Dec-14") & area_type %in% c("Country", "Region")){
+    ONS_data <- httr::content(ONS_data, as = "parsed") %>%
+      .$features
+    
+    ONS_df <- as.data.frame(purrr::map_dfr(ONS_data, purrr::pluck, "attributes"))
+    
+  }else{
+  
   # Remove unwanted fields and retain only England and Wales data
 
-  ONS_data <- httr::content(ONS_data, as = "parsed") %>%
+  ONS_df <- httr::content(ONS_data, as = "parsed") %>%
     jsonlite::fromJSON() %>%
     .$features %>%
     .$attributes
+  }
 
-  EW <- stringr::str_which(ONS_data[, 1], "E|W")
+  EW <- stringr::str_which(ONS_df[, 1], "E|W")
 
-  ONS_data <- ONS_data[EW, 1:2]
+  ONS_data <- ONS_df[EW, 1:2]
 
   names <- stringr::str_trim(names, side = "both")
 
@@ -50,7 +69,7 @@ geocheck <- function(names, area_type, ONS_filedate) {
   file.create("dictionary.dic")
   file.create("dictionary.aff")
 
-  ONS_names <- ONS_data[, 2]
+  ONS_names <- as.character(ONS_data[, 2])
 
   if (area_type == "Region") {
     ONS_names <- c(ONS_names, "Wales")

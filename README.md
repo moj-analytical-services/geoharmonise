@@ -11,6 +11,14 @@ This package provides functions that allow you to compare a set of geographical 
 devtools::install_github("moj-analytical-services/geoharmonise")
 ```
 
+## Available area types
+
+The package currently works with the following area types:
+- Local Authority
+- Region
+- Country
+- Police Force Area
+
 ## Available functions
 
 ### ONS_geolist()

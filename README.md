@@ -34,7 +34,7 @@ It will filter this list to only those that precede this date. If no `date` is e
 
 ### geocheck()
 
-This function will compare a sumbitted vector of area names to a specified ONS list.
+This function will compare a submitted vector of area names to a specified ONS list.
 
 ```r
 checklist <- geocheck(names = data$local_authority, area_type = "Local Authority", ONS_filedate = "01-Apr-20")
